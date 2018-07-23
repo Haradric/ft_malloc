@@ -1,44 +1,45 @@
 
 CC = gcc
-CLFAGS = -Wall -Wextra -Werror
-SOURCE = 
+CFLAGS = -Wall -Wextra -Werror -fPIC -g -DDEBUG
+LDFLAGS = -shared
+SOURCE = libft_malloc.c \
+		 zone_malloc.c \
+		 zone_tiny_alloc.c \
+		 zone_small_alloc.c \
+		 zone_large_alloc.c \
+		 show_alloc_mem.c
 OBJECT = $(SOURCE:.c=.o)
 
 ifeq ($(HOSTTYPE),)
 	HOSTTYPE = $(shell uname -m)_$(shell uname -s)
 endif
 NAME = libft_malloc_$(HOSTTYPE).so
-
-ifeq ($(INSTALL_PATH),)
-	INSTALL_PATH = .
-endif
-LINK = $(INSTALL_PATH)/libft_malloc.so
-LIBFT = libft/libft.a
+LINK = libft_malloc.so
 
 all: $(NAME)
 
-install: $(TARGET)
-	@ln -s $(TARGET) $(LINK)
-
 $(NAME): $(OBJECT)
 	@echo "\033[34mcreating $(NAME)\033[39m"
-	@$(CC) -shared $(SOURCE) -fPIC -o $(NAME)
+	@$(CC) $(CFLAGS) -shared $(SOURCE) -o $(NAME)
+	@echo "\033[34m$(LINK) as a symlink to $(NAME)\033[39m"
+	@rm -f $(LINK)
+	@ln -s $(NAME) $(LINK)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(LIBFT):
-	@make -C libft
+test: $(NAME) test.c
+	$(CC) $(CFLAGS) -c test.c -o test.o
+	$(CC) $(CFLAGS) test.o libft_malloc.so $(NAME) -o test
+	rm -f test.o
 
 clean:
-	@make -C libft clean
 	@echo "\033[34mremoving object files of $(NAME)\033[39m"
 	@rm -f $(OBJECT)
 
 fclean: clean
-	@make -C libft fclean
 	@echo "\033[34mremoving $(NAME)\033[39m"
-	@rm -f $(NAME) $(LINK)
+	@rm -f $(NAME) $(LINK) test
 
 re: fclean all
 
