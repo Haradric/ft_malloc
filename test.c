@@ -5,7 +5,6 @@
 #include <stdlib.h>
 
 #include "libft_malloc.h"
-//#include "libft/libft.h"
 
 #define INPUT_SIZE 8
 

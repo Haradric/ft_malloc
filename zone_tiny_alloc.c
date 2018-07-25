@@ -1,7 +1,6 @@
 
-#include <stddef.h>
-#include <stdint.h>
 #include <sys/mman.h>
+
 #include "libft_malloc_zone.h"
 
 zone_tiny_t *treg = NULL;
@@ -51,26 +50,4 @@ void *zone_tiny_alloc(size_t size) {
     return tblock[i];
 }
 
-size_t show_alloc_mem_tiny(void) {
 
-    size_t size;
-    void   *first;
-    void   *last;
-    size_t i = 0;
-    size_t total = 0;
-
-    printf("TINY : %p\n", treg);
-    while (i < TBLKNUM) {
-        if (tmeta[i].first) {
-            size = tmeta[i].bytes;
-            first = &tblock[i];
-            last = first + size;
-            printf("%p - %p : %zu bytes\n", first, last, size);
-            total += size;
-            i += tb2b(size);
-            continue ;
-        }
-        ++i;
-    }
-    return total;
-}

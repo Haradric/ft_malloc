@@ -41,6 +41,8 @@ typedef struct zone_tiny {
 
 } zone_tiny_t;
 
+extern zone_tiny_t *treg;
+
 void    *zone_tiny_alloc(size_t size);
 void    *zone_small_alloc(size_t size) __attribute((unused));
 void    *zone_large_alloc(size_t size) __attribute((unused));
