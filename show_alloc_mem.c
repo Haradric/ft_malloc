@@ -3,21 +3,17 @@
 
 #include "libft_malloc_zone.h"
 
-size_t show_alloc_mem_tiny(void) {
+static size_t show_reg_tiny(zone_tiny_t *reg) {
 
     size_t size;
-    void   *first;
-    void   *last;
     size_t i = 0;
     size_t total = 0;
 
-    printf("TINY : %p\n", treg);
+    printf("TINY : %p\n", treg + offsetof(zone_tiny_t, block));
     while (i < TBLKNUM) {
-        if (tmeta[i].first) {
-            size = tmeta[i].bytes;
-            first = &tblock[i];
-            last = first + size;
-            printf("%p - %p : %zu bytes\n", first, last, size);
+        if (reg->meta[i].first) {
+            size = reg->meta[i].bytes;
+            printf("%p - %p : %zu bytes\n", &reg->block[i], &reg->block[i] + size, size);
             total += size;
             i += tb2b(size);
             continue ;
@@ -29,11 +25,28 @@ size_t show_alloc_mem_tiny(void) {
 
 void show_alloc_mem(void) {
 
-    size_t total = 0;
+    zone_tiny_t  *tiny;
+//    zone_small_t *small;
+//    zone_large_t *large;
+    size_t      total = 0;
 
-    total += show_alloc_mem_tiny();
-    //total += show_alloc_mem_small();
-    //total += show_alloc_mem_large();
+    tiny = treg;
+    while (tiny) {
+        total += show_reg_tiny(tiny);
+        tiny = tiny->next;
+    }
+
+//    small = sreg;
+//    while (small) {
+//        total += show_reg_small();
+//        small = small->next;
+//    }
+
+//    large = lreg;
+//    while (large) {
+//        total += show_reg_large();
+//        large = large->next;
+//    }
 
     printf("Total: %zu bytes\n", total);
 }

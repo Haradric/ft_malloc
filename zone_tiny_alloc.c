@@ -5,22 +5,25 @@
 
 zone_tiny_t *treg = NULL;
 
-static int init_region(void) {
-    treg = mmap(0, sizeof(zone_tiny_t), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-    if (treg == NULL) {
-        debug("can't allocate memory for tiny region\n");
-        return 0;
+static void *init_region(void) {
+    void *reg;
+
+    reg = mmap(0, sizeof(zone_tiny_t), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    if (reg == NULL) {
+        debug("can't allocate tiny region\n");
+        return NULL;
     }
-    return 1;
+    debug("created tiny region (%p)\n", reg);
+    return reg;
 }
 
-static size_t find_free_space(size_t size) {
+static size_t find_free_space(zone_tiny_t *reg, size_t size) {
     size_t i = 0;
     size_t j = size;
 
     while (i < TBLKNUM && j != 0) {
-        if (tmeta[i].first) {
-            i += tb2b(tmeta[i].bytes);
+        if (reg->meta[i].first) {
+            i += tb2b(reg->meta[i].bytes);
             j = size;
             continue ;
         }
@@ -30,24 +33,44 @@ static size_t find_free_space(size_t size) {
     return (j == 0) ? i - size : -1;
 }
 
-void *zone_tiny_alloc(size_t size) {
+static void *zone_tiny_alloc(zone_tiny_t *reg, size_t size) {
 
     size_t  blocks;
     size_t  i;
 
-    if ((treg == NULL && !init_region()) || !size)
-        return NULL;
-
     blocks = tb2b(size);
-    if ((i = find_free_space(blocks)) == (size_t)-1) {
+    if ((i = find_free_space(reg, blocks)) == (size_t)-1) {
         debug("can't allocate %zu bytes(%zu blocks)\n", size, blocks);
         return NULL;
     }
 
-    tmeta[i].bytes = size;
-    tmeta[i].first = 1;
-    debug("allocated %zu bytes(%zu blocks) starting from %zu block\n", size, blocks, i);
-    return tblock[i];
+    reg->meta[i].bytes = size;
+    reg->meta[i].first = 1;
+    debug("allocated %zu bytes in %zu block(s) (block[%zu] -> %p)\n", \
+          size, blocks, i, &reg->block[i]);
+    return reg->block[i];
 }
 
+void *tiny_alloc(size_t size) {
 
+    zone_tiny_t *reg;
+    void        *ret;
+
+    if (!treg && !(treg = init_region()))
+        return NULL;
+
+    reg = treg;
+    while (1) {
+        if ((ret = zone_tiny_alloc(reg, size)))
+            return ret;
+        if (!reg->next)
+            break ;
+        reg = reg->next;
+    }
+
+    if ((reg->next = init_region()) && \
+        (ret = zone_tiny_alloc(reg->next, size)))
+        return ret;
+
+    return NULL;
+}

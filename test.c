@@ -16,7 +16,7 @@ int main(void) {
     sleep(1);
     while (read(0, input, INPUT_SIZE)) {
         size = atoi(input);
-        printf("size = %zu (\"%s\")\n", size, input);
+        printf("size = %zu\n", size);
         ptr = malloc(size);
         show_alloc_mem();
         (void)ptr;

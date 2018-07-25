@@ -3,9 +3,13 @@
 #include "libft_malloc_zone.h"
 
 void    *malloc_zone(size_t size) {
+
+    if (!size)
+        return NULL;
+
     if (size <= TZONEMAXSZ) {
         debug("using tiny region\n");
-        return (zone_tiny_alloc(size));
+        return (tiny_alloc(size));
     }
     else if (size <= SZONEMAXSZ) {
         debug("using small region\n");
