@@ -13,7 +13,7 @@ void    *malloc_zone(size_t size) {
     }
     else if (size <= SZONEMAXSZ) {
         debug("using small region\n");
-        return (zone_small_alloc(size));
+        return (small_alloc(size));
     }
     else {
         debug("using large region\n");

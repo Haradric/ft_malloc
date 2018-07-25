@@ -14,7 +14,7 @@
 
 // Number of blocks in region
 #define TBLKNUM 1 << 16
-#define SBLKNUM 2 << 14
+#define SBLKNUM 1 << 14
 
 // Allocation Size
 # define TZONEMAXSZ (1 << 10) - 1
@@ -26,11 +26,17 @@
 #define lb2b(bytes) ((bytes) + LBLKSZ - 1) / LBLKSZ
 
 typedef struct meta_tiny {
-    uint16_t  first:1;
-    uint16_t  bytes:11;
+    uint16_t  bytes;
+    uint8_t   first:1;
 } meta_tiny_t;
 
+typedef struct meta_small {
+    uint32_t  bytes:17;
+    uint32_t  first:1;
+} meta_small_t;
+
 typedef uint32_t block_tiny_t[4];
+typedef uint32_t block_small_t[16];
 
 typedef struct zone_tiny {
     struct zone_tiny *next;
@@ -38,10 +44,17 @@ typedef struct zone_tiny {
     meta_tiny_t      meta[TBLKNUM];
 } zone_tiny_t;
 
-extern zone_tiny_t *treg;
+typedef struct zone_small {
+    struct zone_small *next;
+    block_small_t     block[TBLKNUM];
+    meta_small_t      meta[TBLKNUM];
+} zone_small_t;
+
+extern zone_tiny_t  *treg;
+extern zone_small_t *sreg;
 
 void    *tiny_alloc(size_t size);
-void    *zone_small_alloc(size_t size) __attribute((unused));
+void    *small_alloc(size_t size);
 void    *zone_large_alloc(size_t size) __attribute((unused));
 
 void    show_alloc_mem(void);
