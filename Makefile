@@ -2,12 +2,16 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -fPIC -g -DDEBUG
 LDFLAGS = -shared
-SOURCE = libft_malloc.c \
-		 zone_malloc.c \
-		 zone_tiny_alloc.c \
-		 zone_small_alloc.c \
-		 zone_large_alloc.c \
-		 show_alloc_mem.c
+SOURCE = libft_malloc.c     \
+         zone_malloc.c      \
+         zone_free.c        \
+         zone_tiny_alloc.c  \
+         zone_tiny_free.c   \
+         zone_small_alloc.c \
+         zone_small_free.c  \
+         zone_large_alloc.c \
+         zone_large_free.c  \
+         show_alloc_mem.c
 OBJECT = $(SOURCE:.c=.o)
 
 ifeq ($(HOSTTYPE),)

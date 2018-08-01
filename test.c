@@ -19,6 +19,8 @@ int main(void) {
         printf("size = %zu\n", size);
         ptr = malloc(size);
         show_alloc_mem();
+        free(ptr);
+        show_alloc_mem();
         (void)ptr;
     }
 

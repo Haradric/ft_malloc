@@ -6,6 +6,7 @@
 zone_tiny_t *treg;
 
 static void *init_region(void) {
+
     void *reg;
 
     reg = mmap(0, sizeof(zone_tiny_t), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -18,6 +19,7 @@ static void *init_region(void) {
 }
 
 static size_t find_free_space(zone_tiny_t *reg, size_t size) {
+
     size_t i = 0;
     size_t j = size;
 
