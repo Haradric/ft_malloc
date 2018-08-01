@@ -3,7 +3,7 @@
 
 #include "libft_malloc_zone.h"
 
-zone_tiny_t *treg = NULL;
+zone_tiny_t *treg;
 
 static void *init_region(void) {
     void *reg;
@@ -35,19 +35,15 @@ static size_t find_free_space(zone_tiny_t *reg, size_t size) {
 
 static void *zone_tiny_alloc(zone_tiny_t *reg, size_t size) {
 
-    size_t  blocks;
     size_t  i;
 
-    blocks = tb2b(size);
-    if ((i = find_free_space(reg, blocks)) == (size_t)-1) {
-        debug("can't allocate %zu bytes(%zu blocks)\n", size, blocks);
+    i = find_free_space(reg, tb2b(size));
+    if (i == (size_t)-1)
         return NULL;
-    }
 
     reg->meta[i].bytes = size;
     reg->meta[i].first = 1;
-    debug("allocated %zu bytes in %zu block(s) (block[%zu] -> %p)\n", \
-          size, blocks, i, &reg->block[i]);
+
     return reg->block[i];
 }
 
@@ -61,16 +57,21 @@ void *tiny_alloc(size_t size) {
 
     reg = treg;
     while (1) {
-        if ((ret = zone_tiny_alloc(reg, size)))
+        if ((ret = zone_tiny_alloc(reg, size))) {
+            debug("allocated %zu bytes (%p)\n", size, ret);
             return ret;
+        }
         if (!reg->next)
             break ;
         reg = reg->next;
     }
 
     if ((reg->next = init_region()) && \
-        (ret = zone_tiny_alloc(reg->next, size)))
+        (ret = zone_tiny_alloc(reg->next, size))) {
+        debug("allocated %zu bytes (%p)\n", size, ret);
         return ret;
+    }
 
+    debug("can't allocate %zu bytes\n", size);
     return NULL;
 }
