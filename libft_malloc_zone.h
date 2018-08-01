@@ -19,6 +19,7 @@
 // Allocation Size
 # define TZONEMAXSZ (1 << 10) - 1
 # define SZONEMAXSZ (1 << 17) - 1
+# define LZONEMAXSZ SIZE_MAX
 
 // convert bytes to blocks
 #define tb2b(bytes) ((bytes) + TBLKSZ - 1) / TBLKSZ
@@ -35,6 +36,10 @@ typedef struct meta_small {
     uint32_t  first:1;
 } meta_small_t;
 
+typedef struct meta_large {
+    uint64_t  bytes;
+} meta_large_t;
+
 typedef uint32_t block_tiny_t[4];
 typedef uint32_t block_small_t[16];
 
@@ -50,12 +55,19 @@ typedef struct zone_small {
     meta_small_t      meta[TBLKNUM];
 } zone_small_t;
 
+typedef struct zone_large {
+    struct zone_large *next;
+    void              *block;
+    meta_large_t      meta;
+} zone_large_t;
+
 extern zone_tiny_t  *treg;
 extern zone_small_t *sreg;
+extern zone_large_t *lreg;
 
 void    *tiny_alloc(size_t size);
 void    *small_alloc(size_t size);
-void    *zone_large_alloc(size_t size) __attribute((unused));
+void    *large_alloc(size_t size);
 
 void    show_alloc_mem(void);
 

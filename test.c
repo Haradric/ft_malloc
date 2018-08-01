@@ -6,7 +6,7 @@
 
 #include "libft_malloc.h"
 
-#define INPUT_SIZE 8
+#define INPUT_SIZE 256
 
 int main(void) {
     char    input[INPUT_SIZE + 1] = {0};

@@ -15,8 +15,10 @@ void    *malloc_zone(size_t size) {
         debug("using small region\n");
         return (small_alloc(size));
     }
-    else {
+    else if (size <= LZONEMAXSZ) {
         debug("using large region\n");
-        return (zone_large_alloc(size));
+        return (large_alloc(size));
     }
+    debug("sorry, but not today\n");
+    return NULL;
 }

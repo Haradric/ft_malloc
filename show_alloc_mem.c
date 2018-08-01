@@ -9,7 +9,7 @@ static size_t show_reg_tiny(zone_tiny_t *reg) {
     size_t i = 0;
     size_t total = 0;
 
-    printf("TINY : %p\n", treg + offsetof(zone_tiny_t, block));
+    printf("TINY : %p\n", &reg->block[0]);
     while (i < TBLKNUM) {
         if (reg->meta[i].first) {
             size = reg->meta[i].bytes;
@@ -29,7 +29,7 @@ static size_t show_reg_small(zone_small_t *reg) {
     size_t i = 0;
     size_t total = 0;
 
-    printf("SMALL : %p\n", sreg + offsetof(zone_small_t, block));
+    printf("SMALL : %p\n", &reg->block[0]);
     while (i < SBLKNUM) {
         if (reg->meta[i].first) {
             size = reg->meta[i].bytes;
@@ -43,12 +43,23 @@ static size_t show_reg_small(zone_small_t *reg) {
     return total;
 }
 
+static size_t show_reg_large(zone_large_t *reg) {
+
+    size_t size;
+
+    printf("LARGE : %p\n", reg->block);
+    size = reg->meta.bytes;
+    printf("%p - %p : %zu bytes\n", reg->block, reg->block + size, size);
+
+    return size;
+}
+
 void show_alloc_mem(void) {
 
     zone_tiny_t  *tiny;
     zone_small_t *small;
-//    zone_large_t *large;
-    size_t      total = 0;
+    zone_large_t *large;
+    size_t       total = 0;
 
     tiny = treg;
     while (tiny) {
@@ -62,11 +73,11 @@ void show_alloc_mem(void) {
         small = small->next;
     }
 
-//    large = lreg;
-//    while (large) {
-//        total += show_reg_large(large);
-//        large = large->next;
-//    }
+    large = lreg;
+    while (large) {
+        total += show_reg_large(large);
+        large = large->next;
+    }
 
     printf("Total: %zu bytes\n", total);
 }
