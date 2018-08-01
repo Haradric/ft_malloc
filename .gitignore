@@ -1,0 +1,11 @@
+*.o
+*.a
+a.out
+test
+
+*~
+#*#
+
+*.so
+*.so.dSYM
+
