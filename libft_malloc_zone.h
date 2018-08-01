@@ -51,8 +51,8 @@ typedef struct zone_tiny {
 
 typedef struct zone_small {
     struct zone_small *next;
-    block_small_t     block[TBLKNUM];
-    meta_small_t      meta[TBLKNUM];
+    block_small_t     block[SBLKNUM];
+    meta_small_t      meta[SBLKNUM];
 } zone_small_t;
 
 typedef struct zone_large {
