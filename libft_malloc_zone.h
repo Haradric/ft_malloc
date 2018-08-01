@@ -65,7 +65,7 @@ extern zone_tiny_t  *treg;
 extern zone_small_t *sreg;
 extern zone_large_t *lreg;
 
-void    *malloc_zone(size_t size);
+void    *zone_alloc(size_t size);
 void    *tiny_alloc(size_t size);
 void    *small_alloc(size_t size);
 void    *large_alloc(size_t size);

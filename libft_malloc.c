@@ -8,7 +8,7 @@ void    *libft_malloc(size_t size) {
 
     void    *ptr;
 
-    ptr = malloc_zone(size);
+    ptr = zone_alloc(size);
     if (!ptr) {
         errno = ENOMEM;
     }
