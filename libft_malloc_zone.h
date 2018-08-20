@@ -26,6 +26,10 @@
 #define sb2b(bytes) ((bytes) + SBLKSZ - 1) / SBLKSZ
 #define lb2b(bytes) ((bytes) + LBLKSZ - 1) / LBLKSZ
 
+#define FREE_SUCCESS         0
+#define FREE_ERR_WRONG_REG  -1
+#define FREE_ERR_WRONG_ADDR -2
+
 typedef struct meta_tiny {
     uint16_t  bytes;
     uint8_t   first:1;

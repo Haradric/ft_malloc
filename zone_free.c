@@ -4,52 +4,63 @@
 static int iter_tiny_regions(void *ptr) {
 
     zone_tiny_t *reg = treg;
+    int         ret;
 
     while (reg) {
-        if (tiny_free(reg, ptr) == 0)
-            return 0;
+        ret = tiny_free(reg, ptr);
+        if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
+            return ret;
         reg = reg->next;
     }
 
-    return -1;
+    return FREE_ERR_WRONG_ADDR;
 }
 
 static int iter_small_regions(void *ptr) {
 
     zone_small_t *reg = sreg;
+    int          ret;
 
     while (reg) {
-        if (small_free(reg, ptr) == 0)
-            return 0;
+        ret = small_free(reg, ptr);
+        if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
+            return ret;
         reg = reg->next;
     }
 
-    return -1;
+    return FREE_ERR_WRONG_ADDR;
 }
 
 static int iter_large_regions(void *ptr) {
 
     zone_large_t *reg = lreg;
+    int          ret;
 
     while (reg) {
-        if (large_free(reg, ptr) == 0)
-            return 0;
+        ret = large_free(reg, ptr);
+        if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
+            return ret;
         reg = reg->next;
     }
 
-    return -1;
+    return FREE_ERR_WRONG_ADDR;
 }
 
 int zone_free(void *ptr) {
 
-    if (iter_tiny_regions(ptr) == 0)
-        return 0;
+    int ret;
 
-    if (iter_small_regions(ptr) == 0)
-        return 0;
+    ret = iter_tiny_regions(ptr);
+    if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
+        return ret;
 
-    if (iter_large_regions(ptr) == 0)
-        return 0;
+    ret = iter_small_regions(ptr);
+    if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
+        return ret;
 
-    return -1;
+    ret = iter_large_regions(ptr);
+    if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
+        return ret;
+
+    return FREE_ERR_WRONG_ADDR;
 }

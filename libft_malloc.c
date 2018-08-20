@@ -15,8 +15,8 @@ void    *libft_malloc(size_t size) {
     return ptr;
 }
 
-void    free(void *ptr) {
+void    libft_free(void *ptr) {
 
-    if (zone_free(ptr) == -1)
+    if (zone_free(ptr) != FREE_SUCCESS)
         printf("malloc: *** error for object %p: pointer being freed was not allocated\n", ptr);
 }
