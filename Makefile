@@ -33,6 +33,7 @@ $(NAME): $(OBJECT)
 	@echo "\033[34m$(LINK) as a symlink to $(NAME)\033[39m"
 	@rm -f $(LINK)
 	@ln -s $(NAME) $(LINK)
+	@echo "execute \"export DYLD_LIBRARY_PATH=.:\$$DYLD_LIBRARY_PATH\" and \"export DYLD_INSERT_LIBRARIES=$(LINK)\" before use"
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
