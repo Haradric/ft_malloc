@@ -4,7 +4,7 @@
 static int is_fit(zone_tiny_t *reg, size_t index, size_t size) {
 
     size_t end = index + tb2b(size);
-    size_t i = index + reg->meta[index].bytes;
+    size_t i = index + tb2b(reg->meta[index].bytes);
 
     while (i < end) {
         if (reg->meta[i].first == 1)
@@ -37,7 +37,7 @@ void    *tiny_realloc(zone_tiny_t *reg, void *ptr, size_t size) {
         return REALLOC_FAILURE;
 
     // check whether the pointer is the begining of the block
-    block = (ptr - (void *)&reg->block[0]) / sizeof(zone_tiny_t);
+    block = (ptr - (void *)&reg->block[0]) / TBLKSZ;
     if (ptr != (void *)&reg->block[block])
         return REALLOC_FAILURE;
 
