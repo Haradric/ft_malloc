@@ -11,7 +11,7 @@ int small_free(zone_small_t *reg, void *ptr) {
         return FREE_ERR_WRONG_REG;
 
     // check whether the pointer is the begining of the block
-    block = (ptr - (void *)&reg->block[0]) / sizeof(zone_small_t);
+    block = (ptr - (void *)&reg->block[0]) / SBLKSZ;
     if (ptr != (void *)&reg->block[block])
         return FREE_ERR_WRONG_ADDR;
 
