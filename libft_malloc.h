@@ -4,15 +4,9 @@
 
 # include <stddef.h>
 
-# ifdef DEBUG
-# include <stdio.h>
-#  define debug(...) printf(__VA_ARGS__)
-# else
-#  define debug(...)
-# endif
-
 # define malloc  libft_malloc
 # define free    libft_free
+# define realloc libft_realloc
 
 void    *malloc(size_t size);
 void    free(void *ptr);

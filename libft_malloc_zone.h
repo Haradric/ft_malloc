@@ -4,7 +4,12 @@
 
 #include <stdint.h>
 
-#include "libft_malloc.h"
+# ifdef DEBUG
+# include <stdio.h>
+#  define debug(...) printf(__VA_ARGS__)
+# else
+#  define debug(...)
+# endif
 
 // Quantum size (Allocation resolution)
 // T - tiny, S - small, L - large
@@ -29,6 +34,7 @@
 #define FREE_SUCCESS         0
 #define FREE_ERR_WRONG_REG  -1
 #define FREE_ERR_WRONG_ADDR -2
+#define REALLOC_FAILURE      NULL
 
 typedef struct meta_tiny {
     uint16_t  bytes;
@@ -78,6 +84,13 @@ int     zone_free(void *ptr);
 int     tiny_free(zone_tiny_t *reg, void *ptr);
 int     small_free(zone_small_t *reg, void *ptr);
 int     large_free(zone_large_t *reg, void *ptr);
+
+void    *zone_realloc(void *ptr, size_t size);
+void    *tiny_realloc(zone_tiny_t *reg, void *ptr, size_t size);
+void    *small_realloc(zone_small_t *reg, void *ptr, size_t size);
+void    *large_realloc(zone_large_t *reg, void *ptr, size_t size);
+
+void    *libft_memcpy(void *dst, const void *src, size_t n);
 
 #endif
 
