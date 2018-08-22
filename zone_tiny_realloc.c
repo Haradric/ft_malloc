@@ -1,13 +1,13 @@
 
 #include "libft_malloc_zone.h"
 
-static int is_fit(zone_tiny_t *reg, size_t start, size_t size) {
+static int is_fit(zone_tiny_t *reg, size_t index, size_t size) {
 
-    size_t blocks = tb2b(size);
-    size_t i = 1;
+    size_t end = index + tb2b(size);
+    size_t i = index + reg->meta[index].bytes;
 
-    while (i < blocks) {
-        if (reg->meta[start + i].first == 1)
+    while (i < end) {
+        if (reg->meta[i].first == 1)
             return 0;
         ++i;
     }
