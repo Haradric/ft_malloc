@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for file in $(find tests -type f)
+do
+cat $file | ./libft_malloc_test > test.log
+    output=$(tail -1 test.log)
+    [ "$output" = "Total: 0 bytes\n" ] && {
+        printf "PASSED <-- %s" "$file"
+    } || {
+        printf "FAILED <-- %s" "$file"
+    }
+done
+
+rm -f test.log
+

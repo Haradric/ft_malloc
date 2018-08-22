@@ -36,20 +36,18 @@ $(NAME): $(OBJECT)
 	@echo "execute \"export DYLD_LIBRARY_PATH=.:\$$DYLD_LIBRARY_PATH\" and \"export DYLD_INSERT_LIBRARIES=$(LINK)\" before use"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -I. -o $@ -c $<
 
-test: $(NAME) test.c
-	$(CC) $(CFLAGS) -c test.c -o test.o
-	$(CC) $(CFLAGS) test.o libft_malloc.so $(NAME) -o test
-	rm -f test.o
+test: $(NAME) main.o
+	$(CC) $(CFLAGS) main.o libft_malloc.so -o libft_malloc_test
 
 clean:
 	@echo "\033[34mremoving object files of $(NAME)\033[39m"
-	@rm -f $(OBJECT)
+	@rm -f $(OBJECT) main.o
 
 fclean: clean
 	@echo "\033[34mremoving $(NAME)\033[39m"
-	@rm -f $(NAME) $(LINK) test
+	@rm -f $(NAME) $(LINK) libft_malloc_test
 
 re: fclean all
 

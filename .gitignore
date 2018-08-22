@@ -1,11 +1,12 @@
 *.o
 *.a
 a.out
-test
 
 *~
 #*#
 
 *.so
 *.so.dSYM
+
+libft_malloc_test
 
