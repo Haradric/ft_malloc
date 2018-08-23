@@ -45,6 +45,7 @@ static void *zone_tiny_alloc(zone_tiny_t *reg, size_t size) {
 
     reg->meta[i].bytes = size;
     reg->meta[i].first = 1;
+    reg->zones += 1;
 
     return reg->block[i];
 }

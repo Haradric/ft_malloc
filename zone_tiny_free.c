@@ -21,6 +21,7 @@ int tiny_free(zone_tiny_t *reg, void *ptr) {
 
     reg->meta[block].first = 0;
     reg->meta[block].bytes = 0;
+    reg->zones -= 1;
 
     debug("(%p) pointer was freed\n", ptr);
     return 0;

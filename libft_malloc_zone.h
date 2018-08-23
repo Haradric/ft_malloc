@@ -52,21 +52,23 @@ typedef uint8_t block_tiny_t[TBLKSZ];
 typedef uint8_t block_small_t[SBLKSZ];
 
 typedef struct zone_tiny {
-    struct zone_tiny *next;
     block_tiny_t     block[TBLKNUM];
     meta_tiny_t      meta[TBLKNUM];
+    size_t           zones;
+    struct zone_tiny *next;
 } zone_tiny_t;
 
 typedef struct zone_small {
-    struct zone_small *next;
     block_small_t     block[SBLKNUM];
     meta_small_t      meta[SBLKNUM];
+    size_t            zones;
+    struct zone_small *next;
 } zone_small_t;
 
 typedef struct zone_large {
-    struct zone_large *next;
     void              *block;
     meta_large_t      meta;
+    struct zone_large *next;
 } zone_large_t;
 
 extern zone_tiny_t  *treg;
