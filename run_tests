@@ -1,13 +1,18 @@
 #!/bin/bash
 
+[ -f libft_malloc_test ] || {
+    echo "$0: libft_malloc_test not found" 2>&-
+    exit 1
+}
+
 for file in $(find tests -type f)
 do
-cat $file | ./libft_malloc_test > test.log
+    ./libft_malloc_test < $file > test.log
     output=$(tail -1 test.log)
-    [ "$output" = "Total: 0 bytes\n" ] && {
-        printf "PASSED <-- %s" "$file"
+    [ "$output" = "Total: 0 bytes" ] && {
+        printf "PASSED <-- %s\n" "$file"
     } || {
-        printf "FAILED <-- %s" "$file"
+        printf "FAILED <-- %s\n" "$file"
     }
 done
 
