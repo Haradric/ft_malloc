@@ -45,11 +45,10 @@ void    *tiny_realloc(zone_tiny_t *reg, void *ptr, size_t size) {
         return REALLOC_FAILURE;
 
     if (is_fit(reg, block, size)) {
-        // debug message
         reg->meta[block].bytes = size;
+        debug("(%p) changed size to %zu\n", &reg->block[block], size);
     }
     else {
-        // debug message
         ptr = realloc(ptr, reg->meta[block].bytes, size);
     }
 

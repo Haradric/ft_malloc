@@ -2,7 +2,6 @@
 #include <sys/mman.h>
 
 #include "libft_malloc_zone.h"
-#include "libft_malloc.h"
 
 zone_large_t *lreg;
 
@@ -14,7 +13,7 @@ static void *init_region(void) {
         debug("can't allocate large region\n");
         return NULL;
     }
-    debug("created large region (%p)\n", reg);
+    debug("(%p) created large region\n", reg);
     return reg;
 }
 
@@ -42,6 +41,6 @@ void *large_alloc(size_t size) {
         lreg = reg;
     }
 
-    debug("allocated %zu bytes (%p)\n", size, reg->block);
+    debug("(%p) allocated %zu bytes\n", reg->block, size);
     return reg->block;
 }

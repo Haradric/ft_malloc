@@ -18,7 +18,7 @@ void    *malloc(size_t size) {
 void    free(void *ptr) {
 
     if (zone_free(ptr) != FREE_SUCCESS)
-        printf("malloc: *** error for object %p: pointer being freed was not allocated\n", ptr);
+        print_str_ptr(STDERR_FILENO, "malloc: *** error for object ", ptr, ": pointer being freed was not allocated\n");
 }
 
 void    *realloc(void *ptr, size_t size) {

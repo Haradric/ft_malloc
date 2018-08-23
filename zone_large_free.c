@@ -34,6 +34,6 @@ int large_free(zone_large_t *reg, void *ptr) {
     munmap(reg->block, reg->meta.bytes);
     munmap(reg, sizeof(zone_large_t));
 
-    debug("pointer was freed (%p)\n", ptr);
+    debug("(%p) pointer was freed\n", ptr);
     return 0;
 }

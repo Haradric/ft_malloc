@@ -22,6 +22,6 @@ int small_free(zone_small_t *reg, void *ptr) {
     reg->meta[block].first = 0;
     reg->meta[block].bytes = 0;
 
-    debug("pointer was freed (%p)\n", ptr);
+    debug("(%p) pointer was freed\n", ptr);
     return 0;
 }

@@ -14,7 +14,7 @@ static void *init_region(void) {
         debug("can't allocate small region\n");
         return NULL;
     }
-    debug("created small region (%p)\n", reg);
+    debug("(%p) created small region\n", reg);
     return reg;
 }
 
@@ -60,7 +60,7 @@ void *small_alloc(size_t size) {
     reg = sreg;
     while (1) {
         if ((ret = zone_small_alloc(reg, size))) {
-            debug("allocated %zu bytes (%p)\n", size, ret);
+            debug("(%p) allocated %zu bytes\n", ret, size);
             return ret;
         }
         if (!reg->next)
@@ -70,7 +70,7 @@ void *small_alloc(size_t size) {
 
     if ((reg->next = init_region()) && \
         (ret = zone_small_alloc(reg->next, size))) {
-        debug("allocated %zu bytes (%p)\n", size, ret);
+        debug("(%p) allocated %zu bytes\n", ret, size);
         return ret;
     }
 

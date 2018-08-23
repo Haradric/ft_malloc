@@ -20,9 +20,9 @@ void    *large_realloc(zone_large_t *reg, void *ptr, size_t size) {
         return REALLOC_FAILURE;
     libft_memcpy(new, reg->block, reg->meta.bytes);
     munmap(reg->block, reg->meta.bytes);
+    debug("(%p) reallocated from %p (%zu bytes)\n", new, &reg->block, size);
     reg->block = new;
     reg->meta.bytes = size;
 
-    // debug message
     return reg->block;
 }

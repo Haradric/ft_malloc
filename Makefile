@@ -16,6 +16,7 @@ SOURCE = libft_malloc.c       \
          zone_large_free.c    \
          zone_large_realloc.c \
          show_alloc_mem.c     \
+         libft_funcs.c        \
          utils.c
 OBJECT = $(SOURCE:.c=.o)
 

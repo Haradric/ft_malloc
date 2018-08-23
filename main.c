@@ -19,7 +19,7 @@ static void get_line(void) {
     int  i = 0;
 
     while (c != '\n') {
-        read(0, &c, 1);
+        read(STDIN_FILENO, &c, 1);
         readbuff[i++] = c;
     }
     readbuff[i] = 0;

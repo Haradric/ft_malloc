@@ -1,7 +1,14 @@
 
-#include <stdio.h>
+#include <unistd.h>
 
 #include "libft_malloc_zone.h"
+
+static void print_info(void *p1, void *p2, size_t size) {
+
+    print_str_ptr(STDOUT_FILENO, "", p1, " - ");
+    print_str_ptr(STDOUT_FILENO, "", p2, " : ");
+    print_str_size(STDOUT_FILENO, "", size, " bytes\n");
+}
 
 static size_t show_reg_tiny(zone_tiny_t *reg) {
 
@@ -9,11 +16,11 @@ static size_t show_reg_tiny(zone_tiny_t *reg) {
     size_t i = 0;
     size_t total = 0;
 
-    printf("TINY : %p\n", &reg->block[0]);
+    print_str_ptr(STDOUT_FILENO, "TINY : ", &reg->block[0], "\n");
     while (i < TBLKNUM) {
         if (reg->meta[i].first) {
             size = reg->meta[i].bytes;
-            printf("%p - %p : %zu bytes\n", &reg->block[i], &reg->block[i] + size, size);
+            print_info(&reg->block[i], &reg->block[i] + size, size);
             total += size;
             i += tb2b(size);
             continue ;
@@ -29,11 +36,11 @@ static size_t show_reg_small(zone_small_t *reg) {
     size_t i = 0;
     size_t total = 0;
 
-    printf("SMALL : %p\n", &reg->block[0]);
+    print_str_ptr(STDOUT_FILENO, "SMALL : ", &reg->block[0], "\n");
     while (i < SBLKNUM) {
         if (reg->meta[i].first) {
             size = reg->meta[i].bytes;
-            printf("%p - %p : %zu bytes\n", &reg->block[i], &reg->block[i] + size, size);
+            print_info(&reg->block[i], &reg->block[i] + size, size);
             total += size;
             i += sb2b(size);
             continue ;
@@ -47,9 +54,9 @@ static size_t show_reg_large(zone_large_t *reg) {
 
     size_t size;
 
-    printf("LARGE : %p\n", reg->block);
+    print_str_ptr(STDOUT_FILENO, "LARGE : ", &reg->block, "\n");
     size = reg->meta.bytes;
-    printf("%p - %p : %zu bytes\n", reg->block, reg->block + size, size);
+    print_info(reg->block, reg->block + size, size);
 
     return size;
 }
@@ -79,6 +86,6 @@ void show_alloc_mem(void) {
         large = large->next;
     }
 
-    printf("Total: %zu bytes\n", total);
+    print_str_size(STDOUT_FILENO, "Total: ", total, " bytes\n");
 }
 

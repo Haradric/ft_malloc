@@ -89,6 +89,10 @@ void    *small_realloc(zone_small_t *reg, void *ptr, size_t size);
 void    *large_realloc(zone_large_t *reg, void *ptr, size_t size);
 
 void    *libft_memcpy(void *dst, const void *src, size_t n);
+size_t  libft_strlen(const char *s);
+
+void    print_str_ptr(int fd, const char *pre, void *ptr, const char *post);
+void    print_str_size(int fd, const char *pre, size_t size, const char *post);
 
 #endif
 
