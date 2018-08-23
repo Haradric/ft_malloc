@@ -33,7 +33,7 @@ void    *tiny_realloc(zone_tiny_t *reg, void *ptr, size_t size) {
 
     // check if the pointer is located in the region
     if (ptr < (void *)&reg->block[0] && \
-        ptr >= (void *)&reg->block[TBLKNUM] + sizeof(zone_tiny_t))
+        ptr >= (void *)&reg->block[TBLKNUM] + TBLKSZ)
         return REALLOC_FAILURE;
 
     // check whether the pointer is the begining of the block
