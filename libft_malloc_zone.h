@@ -15,7 +15,6 @@
 // T - tiny, S - small, L - large
 # define TBLKSZ 16
 # define SBLKSZ 512
-# define LBLKSZ 4096
 
 // Number of blocks in region
 #define TBLKNUM 1 << 16
@@ -29,7 +28,6 @@
 // convert bytes to blocks
 #define tb2b(bytes) ((bytes) + TBLKSZ - 1) / TBLKSZ
 #define sb2b(bytes) ((bytes) + SBLKSZ - 1) / SBLKSZ
-#define lb2b(bytes) ((bytes) + LBLKSZ - 1) / LBLKSZ
 
 #define FREE_SUCCESS         0
 #define FREE_ERR_WRONG_REG  -1
@@ -50,8 +48,8 @@ typedef struct meta_large {
     uint64_t  bytes;
 } meta_large_t;
 
-typedef uint32_t block_tiny_t[4];
-typedef uint32_t block_small_t[16];
+typedef uint8_t block_tiny_t[TBLKSZ];
+typedef uint8_t block_small_t[SBLKSZ];
 
 typedef struct zone_tiny {
     struct zone_tiny *next;
