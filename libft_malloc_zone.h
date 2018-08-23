@@ -2,6 +2,7 @@
 #ifndef LIBFT_MALLOC_ZONE_H
 # define LIBFT_MALLOC_ZONE_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 # ifdef DEBUG

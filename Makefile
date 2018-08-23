@@ -1,7 +1,7 @@
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fPIC -g -DDEBUG
-LDFLAGS = -shared
+override CFLAGS += -Wall -Wextra -Werror -fPIC
+override LDFLAGS +=
 SOURCE = libft_malloc.c       \
          zone_malloc.c        \
          zone_free.c          \
@@ -30,17 +30,17 @@ all: $(NAME)
 
 $(NAME): $(OBJECT)
 	@echo "\033[34mcreating $(NAME)\033[39m"
-	@$(CC) $(CFLAGS) -shared $(SOURCE) -o $(NAME)
+	@$(CC) $(LDFLAGS) -shared -o $(NAME) $(OBJECT)
 	@echo "\033[34m$(LINK) as a symlink to $(NAME)\033[39m"
 	@rm -f $(LINK)
 	@ln -s $(NAME) $(LINK)
 	@echo "execute \"export DYLD_LIBRARY_PATH=.:\$$DYLD_LIBRARY_PATH\" and \"export DYLD_INSERT_LIBRARIES=$(LINK)\" before use"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I. -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 test: $(NAME) main.o
-	$(CC) $(CFLAGS) main.o libft_malloc.so -o libft_malloc_test
+	@$(CC) $(LDFLAGS) -o libft_malloc_test main.o $(NAME)
 
 clean:
 	@echo "\033[34mremoving object files of $(NAME)\033[39m"
@@ -51,4 +51,3 @@ fclean: clean
 	@rm -f $(NAME) $(LINK) libft_malloc_test
 
 re: fclean all
-
