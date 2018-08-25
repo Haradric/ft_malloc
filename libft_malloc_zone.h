@@ -7,7 +7,11 @@
 
 # ifdef DEBUG
 # include <stdio.h>
-#  define debug(...) printf(__VA_ARGS__)
+#  define debug(...) do \
+    { \
+        printf(__VA_ARGS__); \
+        fflush(stdout); \
+    } while (0)
 # else
 #  define debug(...)
 # endif
