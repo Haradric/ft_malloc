@@ -97,11 +97,17 @@ void    *tiny_realloc(zone_tiny_t *reg, void *ptr, size_t size);
 void    *small_realloc(zone_small_t *reg, void *ptr, size_t size);
 void    *large_realloc(zone_large_t *reg, void *ptr, size_t size);
 
+void    show_reg_tiny(zone_tiny_t *reg, size_t *total, int mode);
+void    show_reg_small(zone_small_t *reg, size_t *total, int mode);
+void    show_reg_large(zone_large_t *reg, size_t *total, int mode);
+void    print_mem_dump(void *addr, size_t len, int mode);
+
 void    *libft_memcpy(void *dst, const void *src, size_t n);
 size_t  libft_strlen(const char *s);
 
 void    print_str_ptr(int fd, const char *pre, void *ptr, const char *post);
 void    print_str_size(int fd, const char *pre, size_t size, const char *post);
+void    print_hex_dump_str(void *ptr, size_t len, size_t offset, char *buff);
 
 #endif
 

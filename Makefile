@@ -2,22 +2,24 @@
 CC = gcc
 override CFLAGS += -Wall -Wextra -Werror -fPIC
 override LDFLAGS +=
-SOURCE = libft_malloc.c       \
-         zone_malloc.c        \
-         zone_free.c          \
-         zone_realloc.c       \
-         zone_tiny_alloc.c    \
-         zone_tiny_free.c     \
-         zone_tiny_realloc.c  \
-         zone_small_alloc.c   \
-         zone_small_free.c    \
-         zone_small_realloc.c \
-         zone_large_alloc.c   \
-         zone_large_free.c    \
-         zone_large_realloc.c \
-         show_alloc_mem.c     \
-         libft_funcs.c        \
-         utils.c
+SOURCE = libft_malloc.c        \
+         zone_malloc.c         \
+         zone_free.c           \
+         zone_realloc.c        \
+         zone_tiny_alloc.c     \
+         zone_tiny_free.c      \
+         zone_tiny_realloc.c   \
+         zone_small_alloc.c    \
+         zone_small_free.c     \
+         zone_small_realloc.c  \
+         zone_large_alloc.c    \
+         zone_large_free.c     \
+         zone_large_realloc.c  \
+         show_alloc_mem.c      \
+         show_alloc_mem_zone.c \
+         show_alloc_mem_dump.c \
+         libft_funcs.c         \
+         print_utils.c
 OBJECT = $(SOURCE:.c=.o)
 
 ifeq ($(HOSTTYPE),)

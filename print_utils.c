@@ -6,25 +6,30 @@
 
 #define CONVERT_BUFF_SIZE 32
 
-static char *ptr_to_str(void *ptr)
+static char *num_to_hex(size_t n, size_t len)
 {
     static char buff[CONVERT_BUFF_SIZE + 1] = {0};
     const unsigned short base = 16;
-    size_t i = CONVERT_BUFF_SIZE;
-    size_t p;
+    size_t i;
     size_t tmp;
 
-    p = (size_t)ptr;
-    while (p > 0)
+    if (len > CONVERT_BUFF_SIZE)
+        return &buff[CONVERT_BUFF_SIZE];
+
+    i = 0;
+    while (i < CONVERT_BUFF_SIZE)
+        buff[i++] = '0';
+    while (n > 0)
     {
-        tmp = p % base;
+        tmp = n % base;
         buff[i] = (tmp >= 10) ? tmp - 10 + 'a' : tmp + '0';
-        p /= base;
+        n /= base;
         --i;
     }
-    buff[i--] = 'x';
-    buff[i] = '0';
-    return &buff[i];
+
+    if (len == 0)
+        return &buff[++i];
+    return &buff[CONVERT_BUFF_SIZE - len + 1];
 }
 
 static char *size_to_str(size_t n)
@@ -54,8 +59,9 @@ void print_str_ptr(int fd, const char *pre, void *ptr, const char *post)
 {
     char *str;
 
-    str = ptr_to_str(ptr);
+    str = num_to_hex((size_t)ptr, 0);
     write(fd, pre, libft_strlen(pre));
+    write(fd, "0x", 2);
     write(fd, str, libft_strlen(str));
     write(fd, post, libft_strlen(post));
 }
@@ -68,4 +74,28 @@ void print_str_size(int fd, const char *pre, size_t size, const char *post)
     write(fd, pre, libft_strlen(pre));
     write(fd, str, libft_strlen(str));
     write(fd, post, libft_strlen(post));
+}
+
+void print_hex_dump_str(void *ptr, size_t len, size_t offset, char *buff)
+{
+    char   *str;
+    size_t i;
+
+    write(STDOUT_FILENO, "  ", 2);
+    str = num_to_hex(offset, 4);
+    write(STDOUT_FILENO, str, 4);
+    write(STDOUT_FILENO, " ", 1);
+    i = 0;
+    while (i < len) {
+        str = num_to_hex(*(unsigned char*)(ptr + i), 2);
+        write(STDOUT_FILENO, " ", 1);
+        write(STDOUT_FILENO, str, 2);
+        ++i;
+    }
+    i = 16 - len;
+    while (i--)
+        write(STDOUT_FILENO, "   ", 3);
+    write(STDOUT_FILENO, "  ", 2);
+    write(STDOUT_FILENO, buff, libft_strlen(buff));
+    write(STDOUT_FILENO, "\n", 1);
 }

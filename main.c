@@ -86,6 +86,8 @@ int main(void) {
             call_realloc();
         else if (!strcmp(readbuff, "show\n"))
             show_alloc_mem();
+        else if (!strcmp(readbuff, "dump\n"))
+            show_alloc_mem_ex();
         else
             write(2, "unknown command\n", 16);
     }
