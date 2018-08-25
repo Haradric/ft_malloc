@@ -3,6 +3,8 @@
 #include <errno.h>
 #include "libft_malloc_zone.h"
 
+void    *zone[3] = {0};
+
 void    *malloc(size_t size) {
 
     void    *ptr;

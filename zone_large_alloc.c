@@ -3,8 +3,6 @@
 
 #include "libft_malloc_zone.h"
 
-zone_large_t *lreg;
-
 static void *init_region(void) {
     void *reg;
 

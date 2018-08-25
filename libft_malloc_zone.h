@@ -76,9 +76,11 @@ typedef struct zone_large {
     struct zone_large *next;
 } zone_large_t;
 
-extern zone_tiny_t  *treg;
-extern zone_small_t *sreg;
-extern zone_large_t *lreg;
+extern void *zone[3];
+
+#define treg zone[0]
+#define sreg zone[1]
+#define lreg zone[2]
 
 void    *zone_alloc(size_t size);
 void    *tiny_alloc(size_t size);
