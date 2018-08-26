@@ -7,8 +7,8 @@ void    *large_realloc(zone_large_t *reg, void *ptr, size_t size) {
     void *new;
 
     // check if the pointer is located in the region
-    if (ptr < (void *)&reg->block && \
-        ptr >= (void *)&reg->block + reg->meta.bytes)
+    if (!ptr || (ptr < (void *)&reg->block && \
+        ptr >= (void *)&reg->block + reg->meta.bytes))
         return REALLOC_FAILURE;
 
     // check whether the pointer is the begining of the block
