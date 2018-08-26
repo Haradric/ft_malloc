@@ -40,13 +40,13 @@
 #define REALLOC_FAILURE      NULL
 
 typedef struct meta_tiny {
-    uint16_t  bytes;
-    uint8_t   first:1;
+    uint16_t  first:1;
+    uint16_t  bytes:15;
 } meta_tiny_t;
 
 typedef struct meta_small {
-    uint32_t  bytes:17;
     uint32_t  first:1;
+    uint32_t  bytes:31;
 } meta_small_t;
 
 typedef struct meta_large {
@@ -110,4 +110,3 @@ void    print_str_size(int fd, const char *pre, size_t size, const char *post);
 void    print_hex_dump_str(void *ptr, size_t len, size_t offset, char *buff);
 
 #endif
-
