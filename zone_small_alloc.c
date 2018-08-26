@@ -30,7 +30,7 @@ static size_t find_free_space(zone_small_t *reg, size_t size) {
         --j;
         ++i;
     }
-    return (j == 0) ? i - size : -1;
+    return (j == 0) ? i - size : (size_t)-1;
 }
 
 static void *zone_small_alloc(zone_small_t *reg, size_t size) {
