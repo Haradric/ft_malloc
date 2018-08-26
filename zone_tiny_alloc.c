@@ -12,7 +12,7 @@ static void *init_region(void) {
         debug("can't allocate tiny region\n");
         return NULL;
     }
-    debug("(%p) created tiny region\n", reg);
+    debug("(%p) allocated tiny region\n", reg);
     return reg;
 }
 

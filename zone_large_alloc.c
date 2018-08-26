@@ -11,7 +11,7 @@ static void *init_region(void) {
         debug("can't allocate large region\n");
         return NULL;
     }
-    debug("(%p) created large region\n", reg);
+    debug("(%p) allocated large region\n", reg);
     return reg;
 }
 
