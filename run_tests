@@ -23,7 +23,7 @@ done
 
 rm -f test.log
 
-for file in $(find tests -maxdepth 1 -name "*.c");
+for file in $(find tests -maxdepth 1 -name "test*.c");
 do
     echo "$file"
 	name="${file%.c}"

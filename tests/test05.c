@@ -1,5 +1,4 @@
 
-#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include "libft_malloc.h"
@@ -8,7 +7,6 @@ int main(void)
 {
     char *addr;
 
-	sleep(1);
     addr = malloc(16);
     free((void*)0);
 

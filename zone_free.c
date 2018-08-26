@@ -60,6 +60,9 @@ int zone_free(void *ptr) {
 
     int ret;
 
+    if (ptr == NULL)
+        return FREE_ERR_WRONG_ADDR;
+
     ret = iter_tiny_regions(ptr);
     if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
         return ret;

@@ -47,6 +47,9 @@ void *zone_realloc(void *ptr, size_t size) {
 
     void *ret;
 
+    if (ptr == NULL)
+        return REALLOC_FAILURE;
+
     if ((ret = iter_tiny_regions(ptr, size)))
         return ret;
 

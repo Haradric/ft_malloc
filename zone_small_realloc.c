@@ -6,6 +6,9 @@ static int is_fit(zone_small_t *reg, size_t index, size_t size) {
     size_t end = index + sb2b(size);
     size_t i = index + sb2b(reg->meta[index].bytes);
 
+    if (end > SBLKNUM)
+        return 0;
+
     while (i < end) {
         if (reg->meta[i].first == 1)
             return 0;
@@ -32,8 +35,8 @@ void    *small_realloc(zone_small_t *reg, void *ptr, size_t size) {
     size_t block;
 
     // check if the pointer is located in the region
-    if (!ptr || (ptr < (void *)&reg->block[0] && \
-        ptr >= (void *)&reg->block[SBLKNUM] + TBLKSZ))
+    if (ptr < (void *)&reg->block[0] && \
+        ptr >= (void *)&reg->block[SBLKNUM] + SBLKSZ)
         return REALLOC_FAILURE;
 
     // check whether the pointer is the begining of the block
