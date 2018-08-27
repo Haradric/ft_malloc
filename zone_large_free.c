@@ -1,22 +1,24 @@
 
 #include <sys/mman.h>
-
 #include "libft_malloc_zone.h"
 
-static void remove_from_list(zone_large_t *reg) {
+static void free_region(zone_large_t *reg) {
 
     zone_large_t *prev;
 
     if (reg == lreg) {
         lreg = reg->next;
-        return ;
+    }
+    else {
+        prev = lreg;
+        while (prev->next != reg)
+            prev = prev->next;
+        prev->next = reg->next;
     }
 
-    prev = lreg;
-    while (prev->next != reg)
-        prev = prev->next;
-
-    prev->next = reg->next;
+    munmap(reg->block, reg->meta.bytes);
+    munmap(reg, sizeof(zone_large_t));
+    debug("(%p) freed large region\n", reg);
 }
 
 int large_free(zone_large_t *reg, void *ptr) {
@@ -30,9 +32,7 @@ int large_free(zone_large_t *reg, void *ptr) {
     if (ptr != reg->block)
         return FREE_ERR_WRONG_ADDR;
 
-    remove_from_list(reg);
-    munmap(reg->block, reg->meta.bytes);
-    munmap(reg, sizeof(zone_large_t));
+    free_region(reg);
 
     debug("(%p) pointer was freed\n", ptr);
     return 0;

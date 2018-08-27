@@ -1,5 +1,26 @@
 
+#include <sys/mman.h>
 #include "libft_malloc_zone.h"
+
+static void free_region(zone_small_t *reg) {
+
+    zone_small_t *prev;
+
+    if (reg == sreg && reg->next == NULL)
+        return ;
+
+    if (reg == sreg && reg->next != NULL) {
+        sreg = reg->next;
+    }
+    else {
+        prev = sreg;
+        while (prev->next != reg)
+            prev = prev->next;
+        prev->next = reg->next;
+        munmap(reg, sizeof(zone_small_t));
+        debug("(%p) freed small region\n", reg);
+    }
+}
 
 int small_free(zone_small_t *reg, void *ptr) {
 
@@ -22,6 +43,9 @@ int small_free(zone_small_t *reg, void *ptr) {
     reg->meta[block].first = 0;
     reg->meta[block].bytes = 0;
     reg->zones -= 1;
+
+    if (!reg->zones)
+        free_region(reg);
 
     debug("(%p) pointer was freed\n", ptr);
     return 0;

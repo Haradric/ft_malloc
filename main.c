@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
-
 #include "libft_malloc.h"
 
 #define INPUT_SIZE 256
