@@ -22,8 +22,8 @@ static void remove_from_list(zone_large_t *reg) {
 int large_free(zone_large_t *reg, void *ptr) {
 
     // check if the pointer is located in the region
-    if (ptr < (void *)&reg->block && \
-        ptr >= (void *)&reg->block + reg->meta.bytes)
+    if (ptr < (void *)reg->block || \
+        ptr > ((void *)reg->block + reg->meta.bytes - 1))
         return FREE_ERR_WRONG_REG;
 
     // check whether the pointer is the begining of the block

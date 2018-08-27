@@ -17,7 +17,7 @@ static int iter_tiny_regions(void *ptr) {
         reg = reg->next;
     }
 
-    return FREE_ERR_WRONG_ADDR;
+    return FREE_ERR_WRONG_REG;
 }
 
 static int iter_small_regions(void *ptr) {
@@ -35,7 +35,7 @@ static int iter_small_regions(void *ptr) {
         reg = reg->next;
     }
 
-    return FREE_ERR_WRONG_ADDR;
+    return FREE_ERR_WRONG_REG;
 }
 
 static int iter_large_regions(void *ptr) {
@@ -53,7 +53,7 @@ static int iter_large_regions(void *ptr) {
         reg = reg->next;
     }
 
-    return FREE_ERR_WRONG_ADDR;
+    return FREE_ERR_WRONG_REG;
 }
 
 int zone_free(void *ptr) {
@@ -75,6 +75,5 @@ int zone_free(void *ptr) {
     if (ret == FREE_SUCCESS || ret == FREE_ERR_WRONG_ADDR)
         return ret;
 
-    print_str_ptr(STDERR_FILENO, "malloc: *** error for object ", ptr, ": pointer being freed was not allocated\n");
     return FREE_ERR_WRONG_ADDR;
 }

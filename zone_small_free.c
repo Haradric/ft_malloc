@@ -6,8 +6,8 @@ int small_free(zone_small_t *reg, void *ptr) {
     size_t block;
 
     // check if the pointer is located in the region
-    if (ptr < (void *)&reg->block[0] && \
-        ptr >= (void *)&reg->block[SBLKNUM] + SBLKSZ)
+    if (ptr < (void *)&reg->block[0] || \
+        ptr > ((void *)&reg->block[SBLKNUM] - 1))
         return FREE_ERR_WRONG_REG;
 
     // check whether the pointer is the begining of the block
