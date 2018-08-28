@@ -1,39 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   show_alloc_mem.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbraslav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/27 17:03:19 by mbraslav          #+#    #+#             */
+/*   Updated: 2018/08/27 17:03:19 by mbraslav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <unistd.h>
 #include "libft_malloc_zone.h"
 
-static void _show_alloc_mem(int mode) {
+static void	show_alloc_mem_(int mode)
+{
+	void	*reg;
+	size_t	total;
 
-    void    *reg;
-    size_t  total = 0;
-
-    reg = treg;
-    while (reg) {
-        show_reg_tiny(reg, &total, mode);
-        reg = ((zone_tiny_t *)reg)->next;
-    }
-
-    reg = sreg;
-    while (reg) {
-        show_reg_small(reg, &total, mode);
-        reg = ((zone_small_t *)reg)->next;
-    }
-
-    reg = lreg;
-    while (reg) {
-        show_reg_large(reg, &total, mode);
-        reg = ((zone_large_t *)reg)->next;
-    }
-
-    print_str_size(STDOUT_FILENO, "Total: ", total, " bytes\n");
+	total = 0;
+	reg = TREG;
+	while (reg)
+	{
+		show_reg_tiny(reg, &total, mode);
+		reg = ((t_zone_tiny *)reg)->next;
+	}
+	reg = SREG;
+	while (reg)
+	{
+		show_reg_small(reg, &total, mode);
+		reg = ((t_zone_small *)reg)->next;
+	}
+	reg = LREG;
+	while (reg)
+	{
+		show_reg_large(reg, &total, mode);
+		reg = ((t_zone_large *)reg)->next;
+	}
+	print_str_size(STDOUT_FILENO, "Total: ", total, " bytes\n");
 }
 
-void show_alloc_mem(void) {
-
-    _show_alloc_mem(0);
+void		show_alloc_mem(void)
+{
+	show_alloc_mem_(0);
 }
 
-void show_alloc_mem_ex(void) {
-
-    _show_alloc_mem(1);
+void		show_alloc_mem_ex(void)
+{
+	show_alloc_mem_(1);
 }

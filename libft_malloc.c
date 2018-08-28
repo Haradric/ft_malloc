@@ -1,35 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_malloc.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbraslav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/27 17:03:19 by mbraslav          #+#    #+#             */
+/*   Updated: 2018/08/27 17:03:19 by mbraslav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <stdint.h>
 #include <errno.h>
 #include <unistd.h>
 #include "libft_malloc_zone.h"
 
-void    *zone[3] = {0};
+void	*g_zone[3] = {0};
 
-void    *malloc(size_t size) {
+void	*malloc(size_t size)
+{
+	void	*ptr;
 
-    void    *ptr;
-
-    ptr = zone_alloc(size);
-    if (!ptr)
-        errno = ENOMEM;
-
-    return ptr;
+	ptr = zone_alloc(size);
+	if (!ptr)
+		errno = ENOMEM;
+	return (ptr);
 }
 
-void    free(void *ptr) {
-
-    if (zone_free(ptr) == FREE_ERR_WRONG_ADDR)
-        print_str_ptr(STDERR_FILENO, "malloc: *** error for object ", ptr, ": pointer being freed was not allocated\n");
+void	free(void *ptr)
+{
+	if (zone_free(ptr) == FREE_ERR_WRONG_ADDR)
+		print_str_ptr(STDERR_FILENO, "malloc: *** error for object ", ptr, \
+				": pointer being freed was not allocated\n");
 }
 
-void    *realloc(void *ptr, size_t size) {
+void	*realloc(void *ptr, size_t size)
+{
+	void	*new;
 
-    void *new;
-
-    new = zone_realloc(ptr, size);
-    if (new == NULL)
-        errno = ENOMEM;
-
-    return new;
+	new = zone_realloc(ptr, size);
+	if (new == NULL)
+		errno = ENOMEM;
+	return (new);
 }
