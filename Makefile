@@ -52,9 +52,6 @@ $(NAME): $(OBJECT)
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-test: $(NAME) main.o
-	@$(CC) $(LDFLAGS) -o libft_malloc_test main.o $(NAME)
-
 clean:
 	@echo "\033[34mremoving object files of $(NAME)\033[39m"
 	@rm -f $(OBJECT) main.o
